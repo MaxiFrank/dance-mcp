@@ -6,6 +6,10 @@
 poetry install
 
 # Run linting
-poetry run task linkt
+poetry run task link
+
+# Start FastMCP inspector for debugging
+poetry run mcp dev src/dance_mcp/server.py
+
 ```
 
