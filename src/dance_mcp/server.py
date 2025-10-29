@@ -11,6 +11,7 @@ from utils.chroma_db import ChromaDB
 
 
 mcp = FastMCP("pole dance")
+db = ChromaDB()
 
 # TODO: Make getting dance moves data loading logic that I can use in multiple files.
 @mcp.resource("mcp://pole_moves")
@@ -69,24 +70,23 @@ def get_prerequisites(move:str) -> Optional[List[str]]:
     return None
 
 @mcp.tool()
-def semantic_search(query) -> Optional[List[str]]:
+def semantic_search(query: str, num: int = 3):
     """
     Get moves from user query.
     """
-    db = ChromaDB()
-    response: dict = db.query_collection(query_text=query)
+    response: dict = db.query_collection(query_text=query, n_results=num)
+    # TODO: Typing for ids is difficult Optional[OneOrMany[ID]]
     return response.get("ids", [])[0]
 
-# TODO: should I instantiate db somewhere outside of the local function scope so I have to do it
-# only once??
 @mcp.tool()
-def find_similar_moves(move:str, num: int = 3) -> Optional[List[str]]:
+def find_similar_moves(move:str, num: int = 3):
     """
     Find list of simiar moves given a user input of move and return by default
     3 similar moves though the num is userdefined  -> Optional[List[str]]
     """
-    db = ChromaDB()
-    response: dict = db.query_collection(query_text=f"give me similar \
+    # TODO: Typing for ids is difficult Optional[OneOrMany[ID]]
+    response = db.query_collection(query_text=f"give me similar \
         moves to {move}", n_results=num)
     return response.get("ids", [])[0]
+
 
