@@ -2,29 +2,23 @@
 Server module that includes MCP resources and tools
 """
 
-import os
 from typing import List, Optional
 
-import json
 from mcp.server.fastmcp import FastMCP
 
+from utils.moves_data import load_dance_moves
+from utils.chroma_db import ChromaDB
 
 
 mcp = FastMCP("pole dance")
 
-DATA_DIR = "./data"
-
 # TODO: Make getting dance moves data loading logic that I can use in multiple files.
 @mcp.resource("mcp://pole_moves")
-def load_dance_moves() -> List[dict]:
+def load_dance_move_resource() -> List[dict]:
     """
     Load dance moves from data directory
     """
-    direcotry = os.listdir(DATA_DIR)
-    file_path = os.path.join(DATA_DIR, direcotry[0])
-    with open(file_path, "r", encoding='utf-8') as json_file:
-        data = json.load(json_file)
-    return data["moves"]
+    return load_dance_moves()
 
 
 @mcp.tool()
@@ -73,3 +67,26 @@ def get_prerequisites(move:str) -> Optional[List[str]]:
         if m["id"] == move:
             return m["prerequisites"]
     return None
+
+@mcp.tool()
+def semantic_search(query) -> Optional[List[str]]:
+    """
+    Get moves from user query.
+    """
+    db = ChromaDB()
+    response: dict = db.query_collection(query_text=query)
+    return response.get("ids", [])[0]
+
+# TODO: should I instantiate db somewhere outside of the local function scope so I have to do it
+# only once??
+@mcp.tool()
+def find_similar_moves(move:str, num: int = 3) -> Optional[List[str]]:
+    """
+    Find list of simiar moves given a user input of move and return by default
+    3 similar moves though the num is userdefined  -> Optional[List[str]]
+    """
+    db = ChromaDB()
+    response: dict = db.query_collection(query_text=f"give me similar \
+        moves to {move}", n_results=num)
+    return response.get("ids", [])[0]
+
