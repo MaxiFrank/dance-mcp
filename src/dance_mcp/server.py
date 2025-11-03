@@ -88,5 +88,3 @@ def find_similar_moves(move:str, num: int = 3):
     response = db.query_collection(query_text=f"give me similar \
         moves to {move}", n_results=num)
     return response.get("ids", [])[0]
-
-
