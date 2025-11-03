@@ -88,6 +88,16 @@ def request_access_token(code, code_verifier):
     # TODO: Need to throw exception if response isn't 200
     return response.json()
 
+def get_valid_access_token():
+    """
+    Retrieves access token after the user logged in.
+    """
+    # TODO: throw error if file not here
+    with open(".spotify_oauth.json", 'r', encoding='utf-8') as f:
+        stored_data = json.load(f)
+        access_token = stored_data.get("access_token")
+    return access_token
+
 app = Flask(__name__)
 
 @app.route('/auth')
