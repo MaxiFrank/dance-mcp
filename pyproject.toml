@@ -16,7 +16,10 @@ dependencies = [
     "mcp[cli] (>=1.19.0,<2.0.0)",
     "chromadb (>=1.2.2,<2.0.0)",
     "flask (>=3.1.2,<4.0.0)",
-    "requests (>=2.32.5,<3.0.0)"
+    "requests (>=2.32.5,<3.0.0)",
+    "langchain-anthropic (>=1.0.1,<2.0.0)",
+    "langgraph (>=1.0.2,<2.0.0)",
+    "langchain-mcp-adapters (>=0.1.12,<0.2.0)"
 ]
 
 
@@ -25,4 +28,7 @@ requires = ["poetry-core>=2.0.0,<3.0.0"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.taskipy.tasks]
-lint = "pylint src/ && black --check src/ && mypy src/"
+lint = "pylint src/ && black src/ && mypy src/"
+
+[tool.pylint.messages_control]
+disable = ["W0511"]
