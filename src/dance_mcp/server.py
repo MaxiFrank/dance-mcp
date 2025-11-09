@@ -13,6 +13,7 @@ from utils.chroma_db import ChromaDB
 mcp = FastMCP("pole dance")
 db = ChromaDB()
 
+
 # TODO: Make getting dance moves data loading logic that I can use in multiple files.
 @mcp.resource("mcp://pole_moves")
 def load_dance_move_resource() -> List[dict]:
@@ -23,7 +24,7 @@ def load_dance_move_resource() -> List[dict]:
 
 
 @mcp.tool()
-def search_by_difficulty(difficulty:str) -> List[str]:
+def search_by_difficulty(difficulty: str) -> List[str]:
     """
     Get pole moves by difficulty: introductory | beginner | intermediate | advanced
     """
@@ -38,8 +39,9 @@ def search_by_difficulty(difficulty:str) -> List[str]:
     # return the list
     return relevant_moves
 
+
 @mcp.tool()
-def search_by_category(category:str) -> Optional[List[str]]:
+def search_by_category(category: str) -> Optional[List[str]]:
     """
     Get pole moves by category: "trick | transition | floorwork | grip | spin | invert,
     """
@@ -56,8 +58,9 @@ def search_by_category(category:str) -> Optional[List[str]]:
     # return the list
     return relevant_moves
 
+
 @mcp.tool()
-def get_prerequisites(move:str) -> Optional[List[str]]:
+def get_prerequisites(move: str) -> Optional[List[str]]:
     """
     Get prerequisites for pole moves
     """
@@ -69,6 +72,7 @@ def get_prerequisites(move:str) -> Optional[List[str]]:
             return m["prerequisites"]
     return None
 
+
 @mcp.tool()
 def semantic_search(query: str, num: int = 3):
     """
@@ -78,13 +82,17 @@ def semantic_search(query: str, num: int = 3):
     # TODO: Typing for ids is difficult Optional[OneOrMany[ID]]
     return response.get("ids", [])[0]
 
+
 @mcp.tool()
-def find_similar_moves(move:str, num: int = 3):
+def find_similar_moves(move: str, num: int = 3):
     """
     Find list of simiar moves given a user input of move and return by default
     3 similar moves though the num is userdefined  -> Optional[List[str]]
     """
     # TODO: Typing for ids is difficult Optional[OneOrMany[ID]]
-    response = db.query_collection(query_text=f"give me similar \
-        moves to {move}", n_results=num)
+    response = db.query_collection(
+        query_text=f"give me similar \
+        moves to {move}",
+        n_results=num,
+    )
     return response.get("ids", [])[0]

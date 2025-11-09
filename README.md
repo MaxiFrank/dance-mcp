@@ -19,5 +19,8 @@ poetry run mcp dev src/dance_mcp/server.py
 
 poetry run mcp dev src/dance_mcp/servers/spotify/spotify_server.py
 
+# Run LangGraph
+poetry run python src/agent/orchestration/main.py
+
 ```
 
