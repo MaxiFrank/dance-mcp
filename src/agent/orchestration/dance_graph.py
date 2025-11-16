@@ -10,7 +10,7 @@ from dance_mcp.client.langchain_mcp_client import client
 
 async def dance_tool_node(state: MessagesState):
     """
-    Eventually use langgraph mcp adapters to execute the tool
+    Use langgraph mcp adapters to execute the dance tools
     """
     tools = await client.get_tools()
     message = state["messages"][-1]
@@ -34,11 +34,29 @@ async def dance_tool_node(state: MessagesState):
     return {"messages": tool_messages}
 
 
-def spotify_tool_node():
+async def spotify_tool_node(state: MessagesState):
     """
-    Eventually use langgraph mcp adapters to execute the tool
+    Use langgraph mcp adapters to execute the spotify tools
     """
-    return {"messages": [{"role": "tool", "content": "spotify tool executed"}]}
+    tools = await client.get_tools()
+    message = state["messages"][-1]
+    print("spotify_tool_node called - messages:", message)
+    print("spotify_tool_node - tools calls:", message.tool_calls)
+    tool_messages = []
+    if message.tool_calls:
+        for tool_call in message.tool_calls:
+            tool_call_id = tool_call["id"]
+            tool_name = tool_call["name"]
+            print("spotify_tool_node - tool_names", tool_name)
+            # why the [0] element, what does tool_name look like?
+            tool = [t for t in tools if t.name == tool_name][0]
+            result = await tool.ainvoke(input=tool_call["args"])
+            tool_message = ToolMessage(
+                tool_call_id=tool_call_id, tool_name=tool_name, content=result
+            )
+            tool_messages.append(tool_message)
+            print("spotify_tool_node - response:", result)
+    return {"messages": tool_messages}
 
 
 def placeholder_routing_post_agent(state: MessagesState):
