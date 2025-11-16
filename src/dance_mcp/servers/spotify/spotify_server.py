@@ -41,3 +41,6 @@ def search_tracks_by_user_input(query, limit=3):
         timeout=30,
     )
     return response.json()
+
+
+mcp.run()

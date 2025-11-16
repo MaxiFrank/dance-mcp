@@ -96,3 +96,6 @@ def find_similar_moves(move: str, num: int = 3):
         n_results=num,
     )
     return response.get("ids", [])[0]
+
+
+mcp.run()
