@@ -11,7 +11,7 @@ poetry shell
 poetry install
 
 # Run to get access_token from spotify
-poetry run mcp dev src/dance_mcp/servers/spotify/spotify_server.py
+poetry run python src/dance_mcp/servers/spotify/spotify_auth.py
 
 # Run linting
 poetry run task lint
