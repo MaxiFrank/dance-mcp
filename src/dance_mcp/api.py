@@ -1,26 +1,27 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from agent.orchestration import dance_graph
-import asyncio
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
 
 
-@app.get("/chats")
-async def chats():
-    result = await root()
-    return result
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000"],  # Next.js default port
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
-async def root():
-    """
-    Main function to run the LangGraph graph
-    """
-    # Currently this does not add user message to state
-    # there's no mechanism for adding any messages to state right now? Is that true?
-    # or is this supposed to be in the agent node?
-    # Explore streaming, like the projects I am familiar with.
-    graph = dance_graph.set_up_graph()
-    user_input = input("Enter your request: ")
-    response = await graph.ainvoke(
-        {"messages": [{"role": "user", "content": user_input}]}
-    )
-    return response
+@app.post("/chats")
+async def chats(request: Request):
+    try:
+        body = await request.json()
+        user_input = body.get("message", "")
+        graph = dance_graph.set_up_graph()
+        response = await graph.ainvoke(
+            {"messages": [{"role": "user", "content": user_input}]}
+        )
+        return response
+    except Exception as e:
+        return {"error": str(e)}
