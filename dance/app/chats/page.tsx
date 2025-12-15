@@ -10,7 +10,7 @@ const ChatsPage = ()  => {
 
         // Add user message to messages array
         const userMessage = { role: 'user', content: input };
-        const updatedMessagesWithUser = [...currentChat, userMessage];
+        const updatedMessagesWithUser = currentChat.concat(userMessage);
         setCurrentChat(updatedMessagesWithUser);
         
         const res = await fetch('http://127.0.0.1:8000/chats', {
@@ -19,14 +19,15 @@ const ChatsPage = ()  => {
             body: JSON.stringify({message: input})
         });
         const data = await res.json();
+        console.log(data);
 
         // Extract LLM response content
         const lastMessage = data.messages[data.messages.length - 1];
-        const llmContent = lastMessage.content || JSON.stringify(data);
+        const llmContent = lastMessage.content || "response has no content";
 
         // Add AI message to array
         const aiMessage = { role: 'assistant', content: llmContent };
-        const updatedMessagesWithAI = [...updatedMessagesWithUser, aiMessage];
+        const updatedMessagesWithAI = updatedMessagesWithUser.concat(aiMessage);
         setCurrentChat(updatedMessagesWithAI);
 
         setInput('');
@@ -46,7 +47,9 @@ const ChatsPage = ()  => {
         <input 
         type="text"
         value={input}
-        onChange={(e) => setInput(e.target.value)}
+        onChange={(e) => {
+            setInput(e.target.value);
+        }}
         placeholder="Type here"
         className="input" 
         />
