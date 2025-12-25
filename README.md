@@ -28,5 +28,9 @@ poetry run mcp dev src/dance_mcp/servers/spotify/spotify_server.py
 poetry run python src/agent/orchestration/main.py
 
 ```
-Start FastAPI
-poetry run mcp dev src/dance_mcp/server.py
+# Start FastAPI
+poetry run python src/dance_mcp/api.py
+
+# Start Frontend in dev
+npm run dev
+

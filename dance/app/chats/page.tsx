@@ -8,15 +8,17 @@ const ChatsPage = ()  => {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
+        const currentInput = input;
+        setInput('');
         // Add user message to messages array
-        const userMessage = { role: 'user', content: input };
+        const userMessage = { role: 'user', content: currentInput };
         const updatedMessagesWithUser = currentChat.concat(userMessage);
         setCurrentChat(updatedMessagesWithUser);
         
         const res = await fetch('http://127.0.0.1:8000/chats', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({message: input})
+            body: JSON.stringify({message: currentInput})
         });
         const data = await res.json();
         console.log(data);
@@ -29,8 +31,6 @@ const ChatsPage = ()  => {
         const aiMessage = { role: 'assistant', content: llmContent };
         const updatedMessagesWithAI = updatedMessagesWithUser.concat(aiMessage);
         setCurrentChat(updatedMessagesWithAI);
-
-        setInput('');
     }
 
     return (
