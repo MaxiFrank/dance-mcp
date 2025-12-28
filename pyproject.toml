@@ -20,7 +20,12 @@ dependencies = [
     "langchain-anthropic (>=1.0.1,<2.0.0)",
     "langgraph (>=1.0.2,<2.0.0)",
     "langchain-mcp-adapters (>=0.1.12,<0.2.0)",
-    "fastapi[standard] (>=0.123.9,<0.124.0)"
+    "fastapi[standard] (>=0.123.9,<0.124.0)",
+    "uvicorn[standard] (>=0.40.0,<0.41.0)",
+    "chromaviz @ git+https://github.com/mtybadger/chromaviz/",
+    "flask-cors (>=6.0.2,<7.0.0)",
+    "pandas (>=2.3.3,<3.0.0)",
+    "scikit-learn (>=1.8.0,<2.0.0)"
 ]
 
 
@@ -33,3 +38,6 @@ lint = "pylint src/ && black src/ && mypy src/"
 
 [tool.pylint.messages_control]
 disable = ["W0511"]
+
+[tool.poetry.scripts]
+start = "src.dance_mcp.api:start"

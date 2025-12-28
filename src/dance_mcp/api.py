@@ -1,6 +1,7 @@
 from fastapi import FastAPI, Request
 from agent.orchestration import dance_graph
 from fastapi.middleware.cors import CORSMiddleware
+import uvicorn
 
 app = FastAPI()
 
@@ -25,3 +26,7 @@ async def chats(request: Request):
         return response
     except Exception as e:
         return {"error": str(e)}
+
+def start():
+    """Launched with `poetry run start` at root level"""
+    uvicorn.run("src.dance_mcp.api:app", host="0.0.0.0", port=8000, reload=True)

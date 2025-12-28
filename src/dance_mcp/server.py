@@ -59,19 +59,6 @@ def search_by_category(category: str) -> Optional[List[str]]:
     return relevant_moves
 
 
-@mcp.tool()
-def get_prerequisites(move: str) -> Optional[List[str]]:
-    """
-    Get prerequisites for pole moves
-    """
-    # TODO: make sure I am pulling up the right prereqs
-    moves = load_dance_moves()
-    # find one that matches
-    for m in moves:
-        if m["id"] == move:
-            return m["prerequisites"]
-    return None
-
 
 @mcp.tool()
 def semantic_search(query: str, num: int = 3):
@@ -80,7 +67,9 @@ def semantic_search(query: str, num: int = 3):
     """
     response: dict = db.query_collection(query_text=query, n_results=num)
     # TODO: Typing for ids is difficult Optional[OneOrMany[ID]]
-    return response.get("ids", [])[0]
+    # must return the whole response and not just the IDs, otherwise I don't have all the
+    # data from the json file to make a good response here
+    return str(response)
 
 
 @mcp.tool()
@@ -99,3 +88,4 @@ def find_similar_moves(move: str, num: int = 3):
 
 
 mcp.run()
+
