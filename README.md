@@ -29,7 +29,7 @@ poetry run python src/agent/orchestration/main.py
 
 ```
 # Start FastAPI
-poetry run python src/dance_mcp/api.py
+poetry run start
 
 # Start Frontend in dev
 npm run dev
