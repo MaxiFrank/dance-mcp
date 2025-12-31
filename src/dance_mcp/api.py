@@ -20,9 +20,13 @@ async def chats(request: Request):
         body = await request.json()
         user_input = body.get("message", "")
         graph = dance_graph.set_up_graph()
+        print("=== Graph execution starting ===")
         response = await graph.ainvoke(
             {"messages": [{"role": "user", "content": user_input}]}
         )
+        print("=== Graph execution completed ===")
+        print("Final response:", str(response))
+        print("Response messages count:", len(response.get("messages", [])))
         return response
     except Exception as e:
         return {"error": str(e)}

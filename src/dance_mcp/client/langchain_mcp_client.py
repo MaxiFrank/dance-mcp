@@ -25,3 +25,23 @@ spotify_client = MultiServerMCPClient(
         }
     }
 )
+
+fetch_mcp_client = MultiServerMCPClient(
+    {
+        "fetch_mcp": {
+            "command": "python",
+            "args": ["-m", "mcp_server_fetch"],
+            "transport": "stdio",
+        }
+    }
+)
+
+scrape_data_client = MultiServerMCPClient(
+    {
+        "data_scraping_mcp": {
+            "command": "python",
+            "args": ["src/dance_mcp/servers/data_scraping_server.py"],
+            "transport": "stdio",
+        }
+    }
+)

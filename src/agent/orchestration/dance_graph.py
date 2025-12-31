@@ -4,8 +4,8 @@ Main graph for the LangGraph graph to orchestrate the dance and spotify tools
 
 from langgraph.graph import StateGraph, MessagesState, START, END
 from langchain_core.messages import ToolMessage
-from agent.orchestration.agent_node import agent_node
-from dance_mcp.client.langchain_mcp_client import dance_client, spotify_client
+from agent.orchestration.agent_node import agent_node, dance_data_node
+from dance_mcp.client.langchain_mcp_client import dance_client, spotify_client, fetch_mcp_client, scrape_data_client
 
 
 async def tool_node(state: MessagesState):
@@ -14,7 +14,10 @@ async def tool_node(state: MessagesState):
     """
     dance_tools = await dance_client.get_tools()
     spotify_tools = await spotify_client.get_tools()
-    tools = dance_tools + spotify_tools
+    mcp_fetch_tool = await fetch_mcp_client.get_tools()
+    data_scraping_tool = await scrape_data_client.get_tools()
+    tools = dance_tools + spotify_tools + mcp_fetch_tool + data_scraping_tool
+
     message = state["messages"][-1]
     print("tool_node called - messages:", message)
     print("tool_node - tools calls:", message.tool_calls)
@@ -34,6 +37,18 @@ async def tool_node(state: MessagesState):
             print("tool_node - response:", result)
     return {"messages": tool_messages}
 
+def url_exists(content: str) -> bool:
+    """Check to see if url exists"""
+    return "http" in content
+
+async def routing_after_start(state: MessagesState):
+    message = state["messages"][-1]
+    # future use case
+    # if url_exists(message.content):
+    #     return "fetch_from_url"
+    if "get online resource" in message.content.lower():
+        return "dance_data"
+    return "agent"
 
 async def routing_post_agent(state: MessagesState):
     """
@@ -62,9 +77,11 @@ def set_up_graph():
     graph = StateGraph(MessagesState)
     graph.add_node("agent", agent_node)
     graph.add_node("tools", tool_node)
+    graph.add_node("dance_data", dance_data_node)
 
-    graph.add_edge(START, "agent")
-    graph.add_conditional_edges("agent", routing_post_agent)
-    graph.add_edge("tools", "agent")
+    graph.add_conditional_edges(START, routing_after_start) # dance_data or agent
+    graph.add_edge("dance_data", END)
+    graph.add_conditional_edges("agent", routing_post_agent) # tools or end
+    graph.add_edge("tools", "agent") # agent
     graph = graph.compile()
     return graph
