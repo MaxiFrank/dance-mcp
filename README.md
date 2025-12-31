@@ -24,6 +24,9 @@ poetry run mcp dev src/dance_mcp/server.py
 
 poetry run mcp dev src/dance_mcp/servers/spotify/spotify_server.py
 
+# Run data scraping server
+poetry run mcp dev src/dance_mcp/servers/data_scraping_server.py
+
 # Run LangGraph
 poetry run python src/agent/orchestration/main.py
 
@@ -33,4 +36,8 @@ poetry run start
 
 # Start Frontend in dev
 npm run dev
+
+# Run Fetch Server
+npx @modelcontextprotocol/inspector uvx mcp-server-fetch
+
 

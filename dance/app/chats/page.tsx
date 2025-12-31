@@ -21,7 +21,7 @@ const ChatsPage = ()  => {
             body: JSON.stringify({message: currentInput})
         });
         const data = await res.json();
-        console.log(data);
+        console.log("Full response: ", JSON.stringify(data, null, 2));
 
         // Extract LLM response content
         const lastMessage = data.messages[data.messages.length - 1];
