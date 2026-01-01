@@ -24,9 +24,9 @@ class ChromaDB:
     def get_ids_and_docs(self):
         "Prepare ids and docs to add data to vector database"
         moves = self.get_data()
-        ids = [move["id"] for move in moves]
+        ids = [str(k) for k in moves.keys()]
         # need to put the whole doc in docs to have all the relevant text
-        docs = [str(move) for move in moves]
+        docs = [str(m) for m in moves.values()]
         return ids, docs
 
     # TODO: No embeddings so far so results are not ideal

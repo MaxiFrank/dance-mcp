@@ -62,7 +62,6 @@ async def dance_data_node(state: MessagesState):
     url_pattern = r'https://polepedia\.com/moves/[^\s\)]+'
     urls = re.findall(url_pattern, content)
     unique_urls = list(set(urls))
-    print("unique urls", unique_urls[0])
     scrape_tools = await scrape_data_client.get_tools()
     scrape_url_tool = [t for t in scrape_tools if t.name == "scrape_url"][0]
     print("tools in scrape_url_tool", scrape_url_tool)
