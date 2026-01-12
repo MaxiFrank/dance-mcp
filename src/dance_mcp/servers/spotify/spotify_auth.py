@@ -156,4 +156,4 @@ def spotify_callback():
 
 if __name__ == "__main__":
     # add /auth to path
-    app.run(host="127.0.0.1", port=8080, debug=True)
+    app.run(host="127.0.0.1local", port=8080, debug=True)

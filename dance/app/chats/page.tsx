@@ -1,5 +1,7 @@
 'use client';
 import { useState } from "react";
+import ReactMarkdown from 'react-markdown';
+import './chat.css'
 
 const ChatsPage = ()  => {
     const [input, setInput] = useState("");
@@ -15,31 +17,64 @@ const ChatsPage = ()  => {
         const updatedMessagesWithUser = currentChat.concat(userMessage);
         setCurrentChat(updatedMessagesWithUser);
         
-        const res = await fetch('http://127.0.0.1:8000/chats', {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({message: currentInput})
-        });
-        const data = await res.json();
-        console.log("Full response: ", JSON.stringify(data, null, 2));
+        try {
+            const apiUrl = 'http://localhost:8000';
+            console.log('Fetching from:', apiUrl);
+            const res = await fetch(`${apiUrl}/chats`, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({message: currentInput})
+            });
+            
+            console.log('Response status:', res.status, res.statusText);
+            
+            if (!res.ok) {
+                const errorText = await res.text();
+                console.error('Error response:', errorText);
+                throw new Error(`HTTP error! status: ${res.status} - ${errorText}`);
+            }
+            
+            const data = await res.json();
+            console.log("Full response: ", JSON.stringify(data, null, 2));
 
-        // Extract LLM response content
-        const lastMessage = data.messages[data.messages.length - 1];
-        const llmContent = lastMessage.content || "response has no content";
+            // Extract LLM response content
+            if (!data.messages || !Array.isArray(data.messages) || data.messages.length === 0) {
+                const errorMessage = data.error || "No response from server";
+                const aiMessage = { role: 'assistant', content: errorMessage };
+                const updatedMessagesWithAI = updatedMessagesWithUser.concat(aiMessage);
+                setCurrentChat(updatedMessagesWithAI);
+                return;
+            }
+            
+            const lastMessage = data.messages[data.messages.length - 1];
+            const llmContent = lastMessage.content || "response has no content";
 
-        // Add AI message to array
-        const aiMessage = { role: 'assistant', content: llmContent };
-        const updatedMessagesWithAI = updatedMessagesWithUser.concat(aiMessage);
-        setCurrentChat(updatedMessagesWithAI);
+            // Add AI message to array
+            const aiMessage = { role: 'assistant', content: llmContent };
+            const updatedMessagesWithAI = updatedMessagesWithUser.concat(aiMessage);
+            setCurrentChat(updatedMessagesWithAI);
+        } catch (error) {
+            const errorMessage = error instanceof Error ? error.message : "Failed to connect to server";
+            const aiMessage = { role: 'assistant', content: `Error: ${errorMessage}` };
+            const updatedMessagesWithAI = updatedMessagesWithUser.concat(aiMessage);
+            setCurrentChat(updatedMessagesWithAI);
+        }
     }
 
     return (
         <>
         {currentChat.map((msg, index) => (
-            <div key={index} className={msg.role === 'user' ? 'chat chat-end' : 'chat chat-start'}>
-                <div className="chat-bubble">
+            <div key={index} className={msg.role === 'user' ? 'chat chat-start' : 'chat chat-end'}>
+                {msg.role === 'user' ? (
+                <div className="chat-bubble chat-bubble-error">
                     {msg.content}
                 </div>
+                ) :
+                (
+                <div className="chat-bubble">
+                    <ReactMarkdown>{msg.content}</ReactMarkdown>
+                </div>
+                )}
             </div>
         ))}
         <div>

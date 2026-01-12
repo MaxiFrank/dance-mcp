@@ -1,0 +1,95 @@
+.chat-container {
+    padding-bottom: 120px;
+    min-height: calc(100vh - 120px);
+    overflow-y: auto;
+    max-height: calc(100vh - 120px);
+}
+
+form {
+    display: flex;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 20px;
+    background-color: white;
+    gap: 10px;
+    z-index: 1000;
+    max-width: 100%;
+    justify-content: center;
+}
+
+form > div {
+    display: flex;
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+    gap: 10px;
+}
+
+form .input {
+    flex: 1;
+    min-width: 0;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    height: 40px;
+    box-sizing: border-box;
+    outline: none;
+}
+
+form .input:focus {
+    outline: none;
+    border: 1px solid #ccc;
+}
+
+form > div {
+    display: flex;
+    align-items: center;
+}
+
+form button {
+    padding: 10px 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #ccc;
+    color: black;
+    font-size: 16px;
+    cursor: pointer;
+    height: 40px;
+    box-sizing: border-box;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.chat-bubble h1,
+.chat-bubble h2,
+.chat-bubble h3,
+.chat-bubble h4,
+.chat-bubble h5,
+.chat-bubble h6 {
+    font-size: 1em;
+    font-weight: 600;
+    margin: 0.5em 0 0.25em 0;
+}
+
+.chat-bubble p {
+    margin: 0.5em 0;
+}
+
+.chat-bubble ul,
+.chat-bubble ol {
+    margin: 0.5em 0;
+    padding-left: 1.5em;
+}
+
+.chat-bubble li {
+    margin: 0.25em 0;
+}
+
+.chat-bubble strong {
+    font-weight: 600;
+}

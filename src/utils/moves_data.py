@@ -6,7 +6,9 @@ import json
 import os
 from typing import List
 
-URLS_DIR = "./data/urls"
+# Use absolute path based on project root
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+URLS_DIR = os.path.join(BASE_DIR, "data", "urls")
 
 
 def load_dance_moves() -> List[dict]:

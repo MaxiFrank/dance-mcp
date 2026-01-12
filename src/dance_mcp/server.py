@@ -10,7 +10,7 @@ from utils.moves_data import load_dance_moves
 from utils.chroma_db import ChromaDB
 
 
-mcp = FastMCP("pole dance")
+mcp = FastMCP("pole dance", host="0.0.0.0", port=8001)
 db = ChromaDB()
 
 
@@ -21,43 +21,6 @@ def load_dance_move_resource() -> List[dict]:
     Load dance moves from data directory
     """
     return load_dance_moves()
-
-
-# @mcp.tool()
-# def search_by_difficulty(difficulty: str) -> List[str]:
-#     """
-#     Get pole moves by difficulty: introductory | beginner | intermediate | advanced
-#     """
-#     relevant_moves = []
-#     # go through the resource
-#     moves = load_dance_moves()
-#     # find one that matches
-#     for move in moves:
-#         for key, value in move.items():
-#             if key == "difficulty" and value == difficulty:
-#                 relevant_moves.append(move["id"])
-#     # return the list
-#     return relevant_moves
-
-
-# @mcp.tool()
-# def search_by_category(category: str) -> Optional[List[str]]:
-#     """
-#     Get pole moves by category: "trick | transition | floorwork | grip | spin | invert,
-#     """
-#     relevant_moves = []
-#     # go through the resource
-#     moves = load_dance_moves()
-#     # find one that matches
-#     for move in moves:
-#         for key, value in move.items():
-#             if key == "category":
-#                 for v in value:
-#                     if v == category:
-#                         relevant_moves.append(move["id"])
-#     # return the list
-#     return relevant_moves
-
 
 
 @mcp.tool()
@@ -87,4 +50,5 @@ def find_similar_moves(move: str, num: int = 3):
     return response.get("ids", [])[0]
 
 
-mcp.run()
+if __name__ == "__main__":
+    mcp.run(transport="streamable-http")
