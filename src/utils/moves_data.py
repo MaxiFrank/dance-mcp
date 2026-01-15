@@ -2,12 +2,10 @@
 Data module containing utility functions such as loading data from json.
 """
 
-import json
 import os
 from typing import List
 
-# Use absolute path based on project root
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+BASE_DIR = os.getenv("BASE_DIR")
 URLS_DIR = os.path.join(BASE_DIR, "data", "urls")
 
 

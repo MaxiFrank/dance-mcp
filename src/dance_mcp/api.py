@@ -34,3 +34,4 @@ async def chats(request: Request):
 def start():
     """Launched with `poetry run start` at root level"""
     uvicorn.run("src.dance_mcp.api:app", host="0.0.0.0", port=8000, reload=True)
+

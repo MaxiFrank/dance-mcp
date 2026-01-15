@@ -4,8 +4,11 @@ from dance_mcp.client.langchain_mcp_client import fetch_mcp_client
 
 from mcp.server.fastmcp import FastMCP
 
-URL_DIR = "./data/urls/test"
-DATA_DIR = "./data/"
+BASE_DIR = os.getenv("BASE_DIR")
+DATA_DIR = os.path.join(BASE_DIR, "data")
+URL_DIR = os.path.join(BASE_DIR, "data", "urls")
+file_path = os.path.join(URL_DIR, "all_tiles_urls.txt")
+
 URLS = [
   "https://polepedia.com/level/intro/",
   "https://polepedia.com/level/beginner/",

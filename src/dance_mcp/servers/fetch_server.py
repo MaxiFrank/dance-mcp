@@ -25,8 +25,6 @@ async def fetch_url(url: str) -> str:
     """
     tools = await stdio_fetch_client.get_tools()
     
-    # Find the fetch tool (usually named "fetch" or "fetch_url")
-    fetch_tool = None
     for tool in tools:
         if "fetch" in tool.name.lower():
             fetch_tool = tool
@@ -41,8 +39,6 @@ async def fetch_url(url: str) -> str:
     except Exception as e:
         return f"Error fetching {url}: {str(e)}"
 
-# You can add more wrapper tools here for other mcp_server_fetch tools
-# Or create a generic dispatcher tool
 
 if __name__ == "__main__":
     mcp.run(transport="streamable-http")

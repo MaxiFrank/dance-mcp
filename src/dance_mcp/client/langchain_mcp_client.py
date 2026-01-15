@@ -27,9 +27,7 @@ spotify_client = MultiServerMCPClient(
 fetch_mcp_client = MultiServerMCPClient(
     {
         "fetch_mcp": {
-            # "command": "python",
-            # "args": ["-m", "mcp_server_fetch"],
-            "url": "http://localhost:8003/mcp",  # URL where mcp_server_fetch is running with streamable-http
+            "url": "http://localhost:8003/mcp",
             "transport": "streamable_http",
         }
     }

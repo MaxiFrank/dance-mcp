@@ -67,3 +67,7 @@ docker build -t dance .
 
 # docker-compose using .yml file in root directory
 docker-compose -f docker-compose-dev.yml up --build
+
+
+# Make changes to container in ./src or ./dance folders
+docker-compose -f docker-compose-dev.yml restart [SERVICE...]

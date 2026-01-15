@@ -50,7 +50,8 @@ async def dance_data_node(state: MessagesState):
     import os, re
 
     print("dance_data_node is called")
-    URL_DIR = "./data/urls"
+    BASE_DIR = os.getenv("BASE_DIR")
+    URL_DIR = os.path.join(BASE_DIR, "data", "urls")
     file_path = os.path.join(URL_DIR, "all_tiles_urls.txt")
     
     try:

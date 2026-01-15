@@ -8,6 +8,7 @@ RUN poetry config virtualenvs.create false \
 
 # Set PYTHONPATH so Python can find the src/ directory
 ENV PYTHONPATH=/app
+ENV BASE_DIR=/app
 
 # Copy and make startup script executable
 COPY start.sh /start.sh
@@ -18,4 +19,3 @@ EXPOSE 8000 8001 8002 8003 8004
 
 # Run the startup script that starts all MCP servers and the FastAPI app
 CMD ["/start.sh"]
-
