@@ -25,6 +25,7 @@ async def fetch_url(url: str) -> str:
     """
     tools = await stdio_fetch_client.get_tools()
     
+    fetch_tool = None
     for tool in tools:
         if "fetch" in tool.name.lower():
             fetch_tool = tool
