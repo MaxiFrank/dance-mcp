@@ -6,7 +6,7 @@ import requests
 from mcp.server.fastmcp import FastMCP
 from dance_mcp.servers.spotify.spotify_auth import get_valid_access_token
 
-mcp = FastMCP("spotify")
+mcp = FastMCP("spotify", host="0.0.0.0", port=8004)
 
 
 @mcp.tool()
@@ -42,5 +42,5 @@ def search_tracks_by_user_input(query, limit=3):
     )
     return response.json()
 
-
-mcp.run()
+if __name__ == "__main__":
+    mcp.run(transport="streamable-http")

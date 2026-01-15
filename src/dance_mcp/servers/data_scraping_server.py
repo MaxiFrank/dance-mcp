@@ -4,8 +4,11 @@ from dance_mcp.client.langchain_mcp_client import fetch_mcp_client
 
 from mcp.server.fastmcp import FastMCP
 
-URL_DIR = "./data/urls"
-DATA_DIR = "./data/"
+BASE_DIR = os.getenv("BASE_DIR")
+DATA_DIR = os.path.join(BASE_DIR, "data")
+URL_DIR = os.path.join(BASE_DIR, "data", "urls")
+file_path = os.path.join(URL_DIR, "all_tiles_urls.txt")
+
 URLS = [
   "https://polepedia.com/level/intro/",
   "https://polepedia.com/level/beginner/",
@@ -17,7 +20,7 @@ URLS = [
   "https://polepedia.com/level/advanced/"
 ]
 
-mcp = FastMCP("scrape data")
+mcp = FastMCP("scrape data", host="0.0.0.0", port=8002)
 
 def save_tiles_file(data: str, filename: str) -> None:
     """
@@ -45,4 +48,5 @@ async def scrape_url(url: str):
     content = await fetch_tool.ainvoke({"url": url})
     save_tiles_file(content, url.split("/")[-2])
 
-mcp.run()
+if __name__ == "__main__":
+    mcp.run("streamable-http")

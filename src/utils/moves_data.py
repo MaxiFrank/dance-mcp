@@ -2,11 +2,11 @@
 Data module containing utility functions such as loading data from json.
 """
 
-import json
 import os
 from typing import List
 
-URLS_DIR = "./data/urls"
+BASE_DIR = os.getenv("BASE_DIR")
+URLS_DIR = os.path.join(BASE_DIR, "data", "urls")
 
 
 def load_dance_moves() -> List[dict]:

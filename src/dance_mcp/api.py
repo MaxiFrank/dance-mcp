@@ -8,7 +8,7 @@ app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],  # Next.js default port
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -34,3 +34,4 @@ async def chats(request: Request):
 def start():
     """Launched with `poetry run start` at root level"""
     uvicorn.run("src.dance_mcp.api:app", host="0.0.0.0", port=8000, reload=True)
+

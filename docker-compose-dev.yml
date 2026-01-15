@@ -1,0 +1,19 @@
+services:
+  backend:
+    build: .
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    volumes:
+      - ./src:/app/src
+
+  frontend:
+    build: ./dance
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./dance:/app/dance
+
+
+
